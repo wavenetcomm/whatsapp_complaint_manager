@@ -17,11 +17,11 @@ Usage:
    pip install flask sqlalchemy psycopg2-binary pandas requests apscheduler xlsxwriter reportlab python-dotenv
 
 2. Environment variables (.env):
-   DATABASE_URL=postgresql://user:pass@localhost:5432/complaintdb  # or sqlite:///complaints.db
-   MSG91_AUTH_KEY=your_msg91_auth_key
-   MSG91_SENDER=your_msg91_sender_id   # if applicable
-   RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
-   MD_PHONE=9198XXXXXXXX   # MD E.164 without leading + (MSG91 may expect country code without +)
+   DATABASE_URL=postgresql://wavenet:Vav@979794@172.30.10.102:5432/complaintdb  # or sqlite:///complaints.db
+   MSG91_AUTH_KEY=419832AlxtwrkX664cc2c9P1
+   MSG91_SENDER=WNITSM   # if applicable
+   RAZORPAY_WEBHOOK_SECRET=2z2lwyvkk7hVxS8tfbQ7sqMC
+   MD_PHONE=919444443271   # MD E.164 without leading + (MSG91 may expect country code without +)
    FLASK_ENV=development
 
 3. Run:
@@ -49,11 +49,11 @@ from reportlab.pdfgen import canvas
 # -----------------------------------------------------------------------------
 # Config
 # -----------------------------------------------------------------------------
-DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///complaints.db')
-MSG91_AUTH_KEY = os.environ.get('MSG91_AUTH_KEY')
-MSG91_SENDER = os.environ.get('MSG91_SENDER')
-RAZORPAY_WEBHOOK_SECRET = os.environ.get('RAZORPAY_WEBHOOK_SECRET')
-MD_PHONE = os.environ.get('MD_PHONE')  # e.g. 9198XXXX (country code without + or with + depending on provider)
+DATABASE_URL = os.environ.get ('sqlite:///complaints.db')
+MSG91_AUTH_KEY = os.environ.get ('419832AlxtwrkX664cc2c9P1')
+MSG91_SENDER = os.environ.get ('WNITSM')
+RAZORPAY_WEBHOOK_SECRET = os.environ.get ('2z2lwyvkk7hVxS8tfbQ7sqMC')
+MD_PHONE = os.environ.get ('919444443271')  # e.g. 9198XXXX (country code without + or with + depending on provider)
 REPORT_DIR = os.path.join(os.getcwd(), 'reports')
 os.makedirs(REPORT_DIR, exist_ok=True)
 
@@ -144,8 +144,8 @@ Base.metadata.create_all(engine)
 
 # Ensure two technicians exist
 if session.query(Technician).count() == 0:
-    t1 = Technician(name='Tech1', phone='911234567890')
-    t2 = Technician(name='Tech2', phone='919876543210')
+    t1 = Technician(name='ANBARASU', phone='919787928412')
+    t2 = Technician(name='ANBUMANI', phone='919787211952')
     session.add_all([t1, t2])
     session.commit()
 
@@ -154,7 +154,7 @@ if session.query(Technician).count() == 0:
 # -----------------------------------------------------------------------------
 
 def send_msg91_whatsapp(phone_e164, message, media_url=None):
-    """Send WhatsApp message using MSG91 API. phone_e164: '9198...' (country code + number)
+    """Send WhatsApp message using MSG91 API. phone_e164: '919443688812' (country code + number)
     Adjust payload to match your MSG91 account settings and template permissions."""
     if not MSG91_AUTH_KEY:
         print('[MSG91] Auth key not set — printing message instead')
@@ -163,7 +163,7 @@ def send_msg91_whatsapp(phone_e164, message, media_url=None):
         return None
     url = 'https://api.msg91.com/api/v5/whatsapp/send'
     headers = {
-        'authkey': MSG91_AUTH_KEY,
+        'authkey': '419832AlxtwrkX664cc2c9P1',
         'Content-Type': 'application/json'
     }
     payload = {
@@ -600,4 +600,4 @@ scheduler.start()
 # -----------------------------------------------------------------------------
 if __name__ == '__main__':
     print('Starting full WhatsApp Complaint Manager...')
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='172.30.10.102', port=5000)
